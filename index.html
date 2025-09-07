@@ -2,309 +2,1060 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Investmate: Stock Average Calculator</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=no"
+    />
+    <title>Investmate: Stock Average Calculator with Dark Mode Toggle</title>
     <link
-      rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
     />
     <style>
+      :root {
+        --bg-color: #f5f7fa;
+        --text-color: #1e293b;
+        --card-bg: #ffffff;
+        --input-bg: #ffffff;
+        --input-border: #cbd5e1;
+        --input-focus-border: #2563eb;
+        --input-focus-shadow: rgba(37, 99, 235, 0.4);
+        --btn-primary-bg: #2563eb;
+        --btn-primary-bg-hover: #1d4ed8;
+        --btn-primary-shadow: rgba(37, 99, 235, 0.35);
+        --btn-primary-shadow-hover: rgba(29, 78, 216, 0.6);
+        --btn-outline-bg-hover: #e0e7ff;
+        --form-text-color: #64748b;
+        --alert-danger-bg: #fef2f2;
+        --alert-danger-color: #b91c1c;
+        --alert-success-bg: #ecfdf5;
+        --alert-success-color: #15803d;
+        --select-bg: #ffffff;
+        --select-color: var(--text-color);
+        --switch-bg: #d1d5db;
+        --switch-thumb-bg: #f9fafb;
+        --switch-active-bg: #2563eb;
+        --switch-active-thumb-bg: #2563eb;
+        --switch-thumb-icon-color: #2563eb;
+        --switch-thumb-icon-active-color: #f9fafb;
+
+        /* Logo colors */
+        --logo-fill: #2563eb;
+        --logo-fill-dark: #f9fafb;
+      }
+
+      .dark-mode {
+        --bg-color: #1e293b;
+        --text-color: #f1f5f9;
+        --card-bg: #273549;
+        --input-bg: #374151;
+        --input-border: #4b5563;
+        --input-focus-border: #3b82f6;
+        --input-focus-shadow: rgba(59, 130, 246, 0.4);
+        --btn-primary-bg: #3b82f6;
+        --btn-primary-bg-hover: #2563eb;
+        --btn-primary-shadow: rgba(59, 130, 246, 0.5);
+        --btn-primary-shadow-hover: rgba(37, 99, 235, 0.7);
+        --btn-outline-bg-hover: #475569;
+        --form-text-color: #94a3b8;
+        --alert-danger-bg: #7f1d1f;
+        --alert-danger-color: #fee2e2;
+        --alert-success-bg: #225e34;
+        --alert-success-color: #dcfce7;
+        --select-bg: #374151;
+        --select-color: var(--text-color);
+        --switch-bg: #4b5563;
+        --switch-thumb-bg: #2563eb;
+        --switch-active-bg: #2563eb;
+        --switch-active-thumb-bg: #f9fafb;
+        --switch-thumb-icon-color: #f9fafb;
+        --switch-thumb-icon-active-color: #2563eb;
+
+        --logo-fill: #f9fafb;
+        --logo-fill-dark: #2563eb;
+      }
+
+      /* Global styles */
       body {
-        font-family: Arial, sans-serif;
-        margin-top: 20px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--bg-color);
+        margin-top: 50px;
+        color: var(--text-color);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding-bottom: 50px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        -webkit-text-size-adjust: 100%;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
       }
-      .container {
-        max-width: 600px;
+
+      .calculator-container {
+        width: 100%;
+        max-width: 700px;
+        background: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: 0 12px 30px rgb(0 0 0 / 0.15);
+        padding: 40px 35px 50px 35px;
+        transition: box-shadow 0.3s ease, background-color 0.3s ease;
+        position: relative;
+        box-sizing: border-box;
       }
-      .error {
-        font-size: 14px;
+
+      .calculator-container:hover {
+        box-shadow: 0 20px 48px rgb(0 0 0 / 0.2);
+      }
+
+      h2 {
+        font-weight: 800;
+        color: var(--text-color);
+        margin-bottom: 40px;
+        text-align: center;
+        letter-spacing: 1.2px;
+        font-size: 2rem;
+        transition: color 0.3s ease;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      /* Logo svg - two colors, changes with dark mode by CSS variables */
+      .logo-svg path,
+      .logo-svg circle {
+        fill: var(--logo-fill);
+        transition: fill 0.3s ease;
+      }
+
+      .dark-mode .logo-svg path,
+      .dark-mode .logo-svg circle {
+        fill: var(--logo-fill-dark);
+      }
+
+      label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: var(--text-color);
+        transition: color 0.3s ease;
+        font-size: 1rem;
+      }
+
+      .form-control {
+        font-size: 1rem;
+        border-radius: 8px;
+        border: 1.6px solid var(--input-border);
+        transition: border-color 0.25s ease, background-color 0.3s ease,
+          color 0.3s ease;
+        background-color: var(--input-bg);
+        color: var(--text-color);
+        padding: 14px 16px;
+        box-sizing: border-box;
+      }
+
+      .form-control::placeholder {
+        color: var(--form-text-color);
+        opacity: 0.7;
+      }
+
+      .form-control:focus {
+        border-color: var(--input-focus-border);
+        box-shadow: 0 0 6px var(--input-focus-shadow);
+        outline: none;
+        background-color: var(--input-bg);
+        color: var(--text-color);
+      }
+
+      .form-select {
+        width: 100%;
+        background-color: var(--select-bg);
+        color: var(--select-color);
+        border-radius: 8px;
+        border: 1.6px solid var(--input-border);
+        padding: 0.5rem 1.75rem 0.5rem 0.75rem;
+        appearance: none;
+        background-image: url('data:image/svg+xml;charset=UTF-8,<svg fill="%236b7a99" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 1rem;
+        font-size: 1rem;
+        transition: border-color 0.25s ease, background-color 0.3s ease,
+          color 0.3s ease;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+        cursor: pointer;
+      }
+
+      .form-select:focus {
+        border-color: var(--input-focus-border);
+        box-shadow: 0 0 6px var(--input-focus-shadow);
+        outline: none;
+        background-color: var(--select-bg);
+        color: var(--text-color);
+      }
+
+      .form-check-label {
+        font-weight: 600;
+        font-size: 1rem;
+        color: var(--text-color);
+        cursor: pointer;
+        transition: color 0.3s ease;
+      }
+
+      .btn-primary {
+        background-color: var(--btn-primary-bg);
+        border: none;
+        font-weight: 700;
+        font-size: 1.1rem;
+        padding: 14px 0;
+        border-radius: 30px;
+        box-shadow: 0 5px 18px var(--btn-primary-shadow);
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      .btn-primary:hover,
+      .btn-primary:focus {
+        background-color: var(--btn-primary-bg-hover);
+        box-shadow: 0 8px 25px var(--btn-primary-shadow-hover);
+      }
+
+      .btn-outline-secondary {
+        font-weight: 700;
+        font-size: 1.1rem;
+        padding: 14px 0;
+        border-radius: 30px;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+        width: 100%;
+      }
+
+      .btn-outline-secondary:hover,
+      .btn-outline-secondary:focus {
+        background-color: var(--btn-outline-bg-hover);
+      }
+
+      .btn svg {
+        height: 20px;
+        width: 20px;
+        stroke: white;
+        stroke-width: 2.5;
+      }
+
+      .form-text {
+        color: var(--form-text-color);
+        font-size: 0.9rem;
+        margin-top: 4px;
+        transition: color 0.3s ease;
+      }
+
+      #alertBox {
+        font-size: 1.1rem;
+        border-radius: 10px;
+        margin-bottom: 30px;
+        background-color: var(--alert-danger-bg);
+        color: var(--alert-danger-color);
+        transition: background-color 0.3s ease, color 0.3s ease;
+        outline: none;
+      }
+
+      #result {
+        margin-top: 50px;
+        font-weight: 700;
+        min-height: 100px;
+        transition: color 0.3s ease;
+        outline: none;
+      }
+
+      #result .alert-success {
+        font-size: 1.2rem;
+        border-radius: 14px;
+        padding: 30px 40px;
+        background-color: var(--alert-success-bg);
+        color: var(--alert-success-color);
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      /* Responsive tweaks */
+      @media (max-width: 576px) {
+        .calculator-container {
+          padding: 25px 20px 35px 20px;
+        }
+
+        h2 {
+          font-size: 1.75rem;
+          margin-bottom: 30px;
+        }
+
+        .form-control,
+        .form-select {
+          font-size: 1.1rem;
+          padding: 14px 16px;
+        }
+
+        .form-text {
+          font-size: 0.95rem;
+        }
+
+        .btn-primary,
+        .btn-outline-secondary {
+          font-size: 1.2rem;
+          padding: 16px 0;
+          width: 100%;
+        }
+      }
+
+      /* Dark mode toggle with sun/moon icons inside slider thumb */
+      .dark-mode-switch {
+        position: absolute;
+        top: 18px;
+        right: 20px;
+        width: 72px;
+        height: 36px;
+        background-color: var(--switch-bg);
+        border-radius: 20px;
+        cursor: pointer;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        padding: 3px;
+        box-sizing: border-box;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+        transition: background-color 0.3s ease;
+        z-index: 100;
+      }
+
+      .dark-mode-switch input[type="checkbox"] {
+        display: none;
+      }
+
+      .dark-mode-switch .slider-thumb {
+        width: 30px;
+        height: 30px;
+        background-color: var(--switch-thumb-bg);
+        border-radius: 50%;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+        position: relative;
+        transition: left 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+        left: 3px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        color: var(--switch-thumb-icon-color);
+        user-select: none;
+      }
+
+      .dark-mode-switch input[type="checkbox"]:checked + .slider-thumb {
+        left: 39px;
+        background-color: var(--switch-active-thumb-bg);
+        color: var(--switch-thumb-icon-active-color);
+      }
+
+      .dark-mode-switch .icon-sun,
+      .dark-mode-switch .icon-moon {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.9rem;
+        pointer-events: none;
+        user-select: none;
+      }
+
+      .dark-mode-switch .icon-sun {
+        left: 8px;
+        color: var(--text-color);
+      }
+
+      .dark-mode-switch .icon-moon {
+        right: 8px;
+        color: var(--text-color);
       }
     </style>
   </head>
+
   <body>
-    <div class="container">
-      <h2 class="text-center">Investmate: Stock Average Calculator</h2>
+    <section
+      class="calculator-container shadow-sm"
+      role="main"
+      aria-labelledby="pageTitle"
+    >
+      <h2 id="pageTitle">
+        <svg
+          class="logo-svg"
+          width="36"
+          height="36"
+          viewBox="0 0 64 64"
+          aria-hidden="true"
+          focusable="false"
+          role="img"
+        >
+          <circle cx="32" cy="32" r="30" />
+          <path
+            d="M20 44 L44 20 M44 44 L20 20"
+            stroke="#fff"
+            stroke-width="5"
+            vector-effect="non-scaling-stroke"
+          />
+        </svg>
+        Investmate: Stock Average Calculator
+      </h2>
+
+      <div
+        class="dark-mode-switch"
+        title="Toggle Dark Mode"
+        aria-label="Toggle dark mode"
+        role="switch"
+        tabindex="0"
+      >
+        <input type="checkbox" id="darkModeToggle" />
+        <div class="slider-thumb" aria-hidden="true">☀️</div>
+        <div class="icon-sun" aria-hidden="true">☀️</div>
+        <div class="icon-moon" aria-hidden="true">🌙</div>
+      </div>
 
       <div
         id="alertBox"
-        class="alert alert-danger d-none error"
+        class="alert alert-danger d-none"
         role="alert"
+        tabindex="-1"
       ></div>
 
-      <!-- Broker and Category Picker -->
-      <div class="row mb-2">
-        <div class="col">
-          <label class="form-label">Broker</label>
-          <select class="form-select" id="brokerSelect"></select>
-        </div>
-        <div class="col">
-          <label class="form-label">Category</label>
-          <select class="form-select" id="categorySelect"></select>
-        </div>
-      </div>
-
-      <!-- Brokerage Inclusion Toggle -->
-      <div class="form-check form-switch mb-3">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          id="includeBrokerage"
-          checked
-        />
-        <label class="form-check-label" for="includeBrokerage"
-          >Include Brokerage Charges in Calculation</label
+      <form id="investmentForm" novalidate>
+        <div
+          class="mb-4 d-flex justify-content-center gap-4"
+          role="radiogroup"
+          aria-label="Select Stock Exchange"
         >
-      </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="exchangeNSE"
+              name="exchange"
+              value="NSE"
+              checked
+            />
+            <label
+              class="form-check-label"
+              for="exchangeNSE"
+              data-bs-toggle="tooltip"
+              title="Select NSE Exchange"
+              >NSE</label
+            >
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              id="exchangeBSE"
+              name="exchange"
+              value="BSE"
+            />
+            <label
+              class="form-check-label"
+              for="exchangeBSE"
+              data-bs-toggle="tooltip"
+              title="Select BSE Exchange"
+              >BSE</label
+            >
+          </div>
+        </div>
 
-      <!-- Input Fields -->
-      <div class="mb-3">
-        <label class="form-label">Current Holdings (Units)</label>
-        <input
-          type="number"
-          class="form-control"
-          id="currentUnits"
-          placeholder="Enter your current stock units"
-          min="1"
-        />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Buy Price Per Unit</label>
-        <input
-          type="number"
-          class="form-control"
-          id="buyPrice"
-          placeholder="Enter the buy price per unit"
-          min="0.01"
-        />
-      </div>
-      <div class="mb-3">
-        <label class="form-label">Current Price Per Unit</label>
-        <input
-          type="number"
-          class="form-control"
-          id="currentPrice"
-          placeholder="Enter the current market price per unit"
-          min="0.01"
-        />
-      </div>
-      <h4 class="mt-3">Choose One:</h4>
-      <div class="mb-3">
-        <label class="form-label"
-          >Available Amount for Additional Investment</label
-        >
-        <input
-          type="number"
-          class="form-control"
-          id="availableAmount"
-          placeholder="Enter available amount"
-          min="0"
-        />
-      </div>
-      <h5 class="text-center">OR</h5>
-      <div class="mb-3">
-        <label class="form-label">Desired Average Price</label>
-        <input
-          type="number"
-          class="form-control"
-          id="desiredAverage"
-          placeholder="Enter desired average price"
-          min="0"
-        />
-      </div>
-      <button class="btn btn-success mt-2" id="calculate">
-        Calculate Required Units
-      </button>
-      <button class="btn btn-warning mt-2" id="clear">Clear Fields</button>
+        <div class="row g-3 mb-4">
+          <div class="col-6">
+            <label
+              for="brokerSelect"
+              data-bs-toggle="tooltip"
+              title="Select your broker for brokerage calculation"
+              >Broker</label
+            >
+            <select id="brokerSelect" class="form-select"></select>
+          </div>
+          <div class="col-6">
+            <label
+              for="categorySelect"
+              data-bs-toggle="tooltip"
+              title="Select the trading category for accurate brokerage"
+              >Category</label
+            >
+            <select id="categorySelect" class="form-select"></select>
+          </div>
+        </div>
 
-      <h4 class="mt-3" id="result"></h4>
-    </div>
+        <div class="form-check form-switch mb-4">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="includeBrokerage"
+            checked
+          />
+          <label
+            class="form-check-label"
+            for="includeBrokerage"
+            data-bs-toggle="tooltip"
+            title="Toggle including brokerage and statutory charges in the calculations"
+            >Include All Charges</label
+          >
+        </div>
 
+        <div class="mb-3">
+          <label for="currentUnits">Current Holdings (Units)</label>
+          <input
+            type="text"
+            id="currentUnits"
+            class="form-control format-inr-no-symbol"
+            placeholder="e.g. 1,000"
+            autocomplete="off"
+          />
+          <small class="form-text">Number of shares you currently hold.</small>
+        </div>
+
+        <div class="mb-3">
+          <label for="buyPrice">Buy Price Per Unit</label>
+          <input
+            type="text"
+            id="buyPrice"
+            class="form-control format-inr"
+            placeholder="e.g. ₹1,000.00"
+            autocomplete="off"
+          />
+          <small class="form-text"
+            >The price at which you originally bought the stock.</small
+          >
+        </div>
+
+        <div class="mb-3">
+          <label for="currentPrice">Current Price Per Unit</label>
+          <input
+            type="text"
+            id="currentPrice"
+            class="form-control format-inr"
+            placeholder="e.g. ₹1,250.00"
+            autocomplete="off"
+          />
+          <small class="form-text">The latest market price of the stock.</small>
+        </div>
+
+        <div class="mb-3">
+          <label for="availableAmount"
+            >Available Amount for Additional Investment</label
+          >
+          <input
+            type="text"
+            id="availableAmount"
+            class="form-control format-inr"
+            placeholder="e.g. ₹50,000.00"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="text-center my-3">
+          <small>OR</small>
+        </div>
+
+        <div class="mb-4">
+          <label for="desiredAverage">Desired Average Price</label>
+          <input
+            type="text"
+            id="desiredAverage"
+            class="form-control format-inr"
+            placeholder="e.g. ₹950.00"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+          <button
+            type="button"
+            id="calculate"
+            class="btn btn-primary"
+            aria-label="Calculate button"
+          >
+            Calculate
+            <svg
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
+          </button>
+          <button
+            type="button"
+            id="clear"
+            class="btn btn-outline-secondary"
+            aria-label="Clear button"
+          >
+            Clear
+            <svg
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </form>
+
+      <div id="result" tabindex="0" aria-live="polite" aria-atomic="true"></div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-      // Sample brokerage data (add/edit as you need)
-      const brokerageList = {
+      // Tooltip activation
+      const tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      );
+      tooltipTriggerList.map((t) => new bootstrap.Tooltip(t));
+
+      // Input formatting/parsing helpers (same as before)
+      function formatToINRPartial(numStr) {
+        if (!numStr) return "";
+        let parts = numStr.split(".");
+        let integerPart = parts[0].replace(/^0+(?=\d)/, "");
+        let decimalPart = parts.length > 1 ? parts[1] : "";
+        let lastThree = integerPart.slice(-3);
+        let otherNumbers = integerPart.slice(0, -3);
+        if (otherNumbers !== "") lastThree = "," + lastThree;
+        let formattedInteger =
+          otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+        return `₹${formattedInteger}${decimalPart ? "." + decimalPart : ""}`;
+      }
+      function formatToINR(num) {
+        if (!num && num !== 0) return "₹0.00";
+        let [integerPart, decimalPart] = num.toFixed(2).split(".");
+        let lastThree = integerPart.slice(-3);
+        let otherNumbers = integerPart.slice(0, -3);
+        if (otherNumbers !== "") lastThree = "," + lastThree;
+        let formatted =
+          otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+        return `₹${formatted}.${decimalPart}`;
+      }
+      function parseINRToNumber(str) {
+        if (!str) return NaN;
+        let clean = str.replace(/[₹, ]/g, "");
+        return parseFloat(clean);
+      }
+      function formatIndianNumber(numStr) {
+        if (!numStr) return "";
+        let parts = numStr.split(".");
+        let integerPart = parts[0].replace(/^0+(?=\d)/, "");
+        let decimalPart = parts.length > 1 ? parts[1] : "";
+        let lastThree = integerPart.slice(-3);
+        let otherNumbers = integerPart.slice(0, -3);
+        if (otherNumbers !== "") lastThree = "," + lastThree;
+        let formattedInteger =
+          otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree;
+        return `${formattedInteger}${decimalPart ? "." + decimalPart : ""}`;
+      }
+      function parseIndianNumber(str) {
+        if (!str) return NaN;
+        let clean = str.replace(/,/g, "");
+        return parseInt(clean, 10);
+      }
+      function formatInput(input, formatFn, parseFn, addSymbol = false) {
+        input.addEventListener("input", () => {
+          let cursorPos = input.selectionStart;
+          let val = input.value;
+          let cleaned = val.replace(/[₹, ]/g, "");
+          if (addSymbol) {
+            let parts = cleaned.split(".");
+            if (parts.length > 2) cleaned = parts[0] + "." + parts[1];
+            cleaned =
+              parts[0].replace(/\D/g, "") +
+              (parts[1] !== undefined ? "." + parts[1].replace(/\D/g, "") : "");
+            if (cleaned === "") {
+              input.value = "";
+              return;
+            }
+          } else {
+            let parts = cleaned.split(".");
+            if (parts.length > 2) cleaned = parts[0] + "." + parts[1];
+            cleaned =
+              parts[0].replace(/\D/g, "") +
+              (parts[1] !== undefined ? "." + parts[1].replace(/\D/g, "") : "");
+            if (cleaned === "") {
+              input.value = "";
+              return;
+            }
+          }
+          let formatted = formatFn(cleaned);
+          let prevLen = val.length;
+          input.value = formatted;
+          let newLen = formatted.length;
+          cursorPos = cursorPos + (newLen - prevLen);
+          if (cursorPos >= 0 && cursorPos <= newLen) {
+            input.setSelectionRange(cursorPos, cursorPos);
+          } else {
+            input.setSelectionRange(newLen, newLen);
+          }
+        });
+        input.addEventListener("blur", () => {
+          let val = input.value.replace(/[₹, ]/g, "");
+          if (!val) {
+            input.value = "";
+            return;
+          }
+          let num = addSymbol ? parseFloat(val) : parseInt(val, 10);
+          if (isNaN(num)) {
+            input.value = "";
+            return;
+          }
+          input.value = addSymbol
+            ? formatToINR(num)
+            : formatIndianNumber(num.toString());
+        });
+      }
+      document
+        .querySelectorAll(".format-inr")
+        .forEach((input) =>
+          formatInput(input, formatToINRPartial, parseINRToNumber, true)
+        );
+      document
+        .querySelectorAll(".format-inr-no-symbol")
+        .forEach((input) =>
+          formatInput(input, formatIndianNumber, parseIndianNumber, false)
+        );
+
+      const chargesData = {
         Zerodha: {
-          "Equity Delivery": {
-            calc: (amt) => 0, // ₹0 for delivery
-            note: "No brokerage for delivery",
+          NSE: {
+            "Equity Delivery": {
+              brokerage: (amt) => 0,
+              stt: (amt) => amt * 0.001,
+              stampDuty: (amt) => amt * 0.00003,
+              exchangeTxn: (amt) => amt * 0.0000345,
+              sebiTurnover: (amt) => amt * 0.00001,
+              dpCharges: 20,
+              ipfFund: (amt) => amt * 0.000002,
+              gst: (amt) => 0,
+            },
+            "Equity Intraday": {
+              brokerage: (amt) => Math.min(amt * 0.0003, 20),
+              stt: (amt) => 0,
+              stampDuty: (amt) => 0,
+              exchangeTxn: (amt) => amt * 0.0000345,
+              sebiTurnover: (amt) => amt * 0.00001,
+              dpCharges: 0,
+              ipfFund: (amt) => amt * 0.000002,
+              gst: (amt) => Math.min(amt * 0.0003, 20) * 0.18,
+            },
           },
-          "Equity Intraday": {
-            calc: (amt) => Math.min(amt * 0.0003, 20),
-            note: "0.03% or ₹20 max",
+          BSE: {
+            "Equity Delivery": {
+              brokerage: (amt) => 0,
+              stt: (amt) => amt * 0.001,
+              stampDuty: (amt) => amt * 0.00003,
+              exchangeTxn: (amt) => amt * 0.0000345,
+              sebiTurnover: (amt) => amt * 0.00001,
+              dpCharges: 20,
+              ipfFund: (amt) => amt * 0.000002,
+              gst: (amt) => 0,
+            },
+            "Equity Intraday": {
+              brokerage: (amt) => Math.min(amt * 0.0003, 20),
+              stt: (amt) => 0,
+              stampDuty: (amt) => 0,
+              exchangeTxn: (amt) => amt * 0.0000345,
+              sebiTurnover: (amt) => amt * 0.00001,
+              dpCharges: 0,
+              ipfFund: (amt) => amt * 0.000002,
+              gst: (amt) => Math.min(amt * 0.0003, 20) * 0.18,
+            },
           },
         },
         Groww: {
-          "Equity Delivery": {
-            calc: (amt) => Math.max(Math.min(amt * 0.001, 20), 5), // 0.1% or ₹20, min ₹5 (2025)
-            note: "0.1% or ₹20 max, Min ₹5",
+          NSE: {
+            "Equity Delivery": {
+              brokerage: (amt) => Math.max(Math.min(amt * 0.001, 20), 5),
+              stt: (amt) => amt * 0.001,
+              stampDuty: (amt) => amt * 0.00003,
+              exchangeTxn: (amt) => amt * 0.0000345,
+              sebiTurnover: (amt) => amt * 0.00001,
+              dpCharges: 20,
+              ipfFund: (amt) => amt * 0.000002,
+              gst: (amt) => {
+                let bro = Math.max(Math.min(amt * 0.001, 20), 5);
+                return bro * 0.18;
+              },
+            },
+            "Equity Intraday": {
+              brokerage: (amt) => Math.max(Math.min(amt * 0.001, 20), 5),
+              stt: (amt) => 0,
+              stampDuty: (amt) => 0,
+              exchangeTxn: (amt) => amt * 0.0000345,
+              sebiTurnover: (amt) => amt * 0.00001,
+              dpCharges: 0,
+              ipfFund: (amt) => amt * 0.000002,
+              gst: (amt) => {
+                let bro = Math.max(Math.min(amt * 0.001, 20), 5);
+                return bro * 0.18;
+              },
+            },
           },
-          "Equity Intraday": {
-            calc: (amt) => Math.max(Math.min(amt * 0.001, 20), 5), // 0.1% or ₹20, min ₹5
-            note: "0.1% or ₹20 max, Min ₹5",
+          BSE: {
+            "Equity Delivery": {
+              brokerage: (amt) => Math.max(Math.min(amt * 0.001, 20), 5),
+              stt: (amt) => amt * 0.001,
+              stampDuty: (amt) => amt * 0.00003,
+              exchangeTxn: (amt) => amt * 0.0000345,
+              sebiTurnover: (amt) => amt * 0.00001,
+              dpCharges: 20,
+              ipfFund: (amt) => amt * 0.000002,
+              gst: (amt) => {
+                let bro = Math.max(Math.min(amt * 0.001, 20), 5);
+                return bro * 0.18;
+              },
+            },
+            "Equity Intraday": {
+              brokerage: (amt) => Math.max(Math.min(amt * 0.001, 20), 5),
+              stt: (amt) => 0,
+              stampDuty: (amt) => 0,
+              exchangeTxn: (amt) => amt * 0.0000345,
+              sebiTurnover: (amt) => amt * 0.00001,
+              dpCharges: 0,
+              ipfFund: (amt) => amt * 0.000002,
+              gst: (amt) => {
+                let bro = Math.max(Math.min(amt * 0.001, 20), 5);
+                return bro * 0.18;
+              },
+            },
           },
         },
-        // Add other brokers/categories and formula as needed
       };
 
-      // --- Bootstrap Broker & Category selectors ---
       function populatePickers() {
         const brokerSel = document.getElementById("brokerSelect");
-        brokerSel.innerHTML = Object.keys(brokerageList)
-          .map((broker) => `<option value="${broker}">${broker}</option>`)
+        brokerSel.innerHTML = Object.keys(chargesData)
+          .map((b) => `<option value="${b}">${b}</option>`)
           .join("");
         populateCategoryPicker();
         brokerSel.addEventListener("change", populateCategoryPicker);
       }
+
       function populateCategoryPicker() {
         const broker = document.getElementById("brokerSelect").value;
+        const exchange = getSelectedExchange();
         const catSel = document.getElementById("categorySelect");
-        const categories = Object.keys(brokerageList[broker]);
-        catSel.innerHTML = categories
-          .map((cat) => `<option value="${cat}">${cat}</option>`)
-          .join("");
+        if (chargesData[broker] && chargesData[broker][exchange]) {
+          const categories = Object.keys(chargesData[broker][exchange]);
+          catSel.innerHTML = categories
+            .map((c) => `<option value="${c}">${c}</option>`)
+            .join("");
+        } else {
+          catSel.innerHTML = '<option value="">N/A</option>';
+        }
       }
+
+      function getSelectedExchange() {
+        const exchangeInputs = document.getElementsByName("exchange");
+        for (const input of exchangeInputs) {
+          if (input.checked) return input.value;
+        }
+        return "NSE";
+      }
+
+      document
+        .querySelectorAll('input[name="exchange"]')
+        .forEach((input) =>
+          input.addEventListener("change", populateCategoryPicker)
+        );
+
       populatePickers();
 
-      // --- Error helpers ---
-      function showError(message) {
+      function showError(msg) {
         const alertBox = document.getElementById("alertBox");
-        alertBox.textContent = message;
+        alertBox.textContent = msg;
         alertBox.classList.remove("d-none");
+        alertBox.focus();
       }
+
       function clearError() {
         const alertBox = document.getElementById("alertBox");
         alertBox.classList.add("d-none");
         alertBox.textContent = "";
       }
 
-      document
-        .getElementById("calculate")
-        .addEventListener("click", function () {
-          clearError();
-          // Input fields
-          let currentUnits = parseInt(
-            document.getElementById("currentUnits").value,
-            10
+      document.getElementById("calculate").addEventListener("click", () => {
+        clearError();
+
+        const currentUnits = parseIndianNumber(
+          document.getElementById("currentUnits").value
+        );
+        const buyPrice = parseINRToNumber(
+          document.getElementById("buyPrice").value
+        );
+        const currentPrice = parseINRToNumber(
+          document.getElementById("currentPrice").value
+        );
+        const availableAmount = parseINRToNumber(
+          document.getElementById("availableAmount").value
+        );
+        const desiredAverage = parseINRToNumber(
+          document.getElementById("desiredAverage").value
+        );
+
+        if (!currentUnits || currentUnits < 1)
+          return showError("Please enter a valid current units (>0).");
+        if (!buyPrice || buyPrice <= 0)
+          return showError("Please enter a valid buy price (>0).");
+        if (!currentPrice || currentPrice <= 0)
+          return showError("Please enter a valid current price (>0).");
+        if (
+          (!availableAmount || availableAmount <= 0) &&
+          (!desiredAverage || desiredAverage <= 0)
+        )
+          return showError(
+            "Please enter either an available amount (>0) or a desired average price (>0)."
           );
-          let buyPrice = parseFloat(document.getElementById("buyPrice").value);
-          let currentPrice = parseFloat(
-            document.getElementById("currentPrice").value
-          );
-          let availableAmount = parseFloat(
-            document.getElementById("availableAmount").value
-          );
-          let desiredAverage = parseFloat(
-            document.getElementById("desiredAverage").value
+        if (
+          availableAmount &&
+          desiredAverage &&
+          availableAmount > 0 &&
+          desiredAverage > 0
+        )
+          return showError(
+            "Please fill only one: either Available Amount or Desired Average Price."
           );
 
-          // Validation
-          if (!currentUnits || currentUnits < 1)
-            return showError("Please enter a valid current units (>0).");
-          if (!buyPrice || buyPrice <= 0)
-            return showError("Please enter a valid buy price (>0).");
-          if (!currentPrice || currentPrice <= 0)
-            return showError("Please enter a valid current price (>0).");
-          if (
-            (!availableAmount || availableAmount <= 0) &&
-            (!desiredAverage || desiredAverage <= 0)
-          )
-            return showError(
-              "Please enter either an available amount (>0) or a desired average price (>0)."
-            );
-          if (
-            availableAmount &&
-            desiredAverage &&
-            availableAmount > 0 &&
-            desiredAverage > 0
-          )
-            return showError(
-              "Please fill only one: either Available Amount or Desired Average Price."
-            );
+        const broker = document.getElementById("brokerSelect").value;
+        const category = document.getElementById("categorySelect").value;
+        const exchange = getSelectedExchange();
+        const includeCharges =
+          document.getElementById("includeBrokerage").checked;
 
-          // Broker/Category selection
-          const broker = document.getElementById("brokerSelect").value;
-          const category = document.getElementById("categorySelect").value;
-          const includeBrokerage =
-            document.getElementById("includeBrokerage").checked;
-          const getBrokerage = brokerageList[broker][category].calc;
+        if (
+          !chargesData[broker] ||
+          !chargesData[broker][exchange] ||
+          !chargesData[broker][exchange][category]
+        )
+          return showError(
+            "Selected broker/category/exchange combination not available."
+          );
 
-          // Calculation
-          let newUnits = 0,
-            currentInvestment = currentUnits * buyPrice,
-            totalInvestment = currentInvestment,
-            requiredAmount = 0,
-            remainingAmount = 0,
-            brokerageTotal = 0,
-            unitBrokerage = 0;
-          if (availableAmount && availableAmount > 0) {
-            // We need to account for brokerage in purchase calculation
-            if (!includeBrokerage) {
-              newUnits = Math.floor(availableAmount / currentPrice);
-              totalInvestment += newUnits * currentPrice;
-              remainingAmount = availableAmount - newUnits * currentPrice;
-              brokerageTotal = 0;
-            } else {
-              // Iteratively find max # of shares within availableAmount, including brokerage
-              let unitsPossible = Math.floor(availableAmount / currentPrice);
-              // Try decreasing if brokerage pushes total over amount
-              for (let n = unitsPossible; n > 0; n--) {
-                let amt = n * currentPrice;
-                let bro = getBrokerage(amt);
-                if (amt + bro <= availableAmount) {
-                  newUnits = n;
-                  brokerageTotal = bro;
-                  remainingAmount = availableAmount - (amt + bro);
-                  totalInvestment += amt + bro;
-                  break;
-                }
+        const chargeFuncs = chargesData[broker][exchange][category];
+
+        let newUnits = 0,
+          currentInvestment = currentUnits * buyPrice,
+          totalInvestment = currentInvestment,
+          brokerageTotal = 0,
+          requiredAmount = 0,
+          remainingAmount = 0;
+
+        const computeCharges = (amt) => {
+          let brokerFee = chargeFuncs.brokerage(amt);
+          if (!includeCharges) return 0;
+          let stt = chargeFuncs.stt(amt);
+          let stampDuty = chargeFuncs.stampDuty(amt);
+          let exchangeTxn = chargeFuncs.exchangeTxn(amt);
+          let sebiTurnover = chargeFuncs.sebiTurnover(amt);
+          let dpCharges = chargeFuncs.dpCharges || 0;
+          let ipfFund = chargeFuncs.ipfFund(amt);
+          let gst = chargeFuncs.gst(amt);
+
+          return (
+            brokerFee +
+            stt +
+            stampDuty +
+            exchangeTxn +
+            sebiTurnover +
+            dpCharges +
+            ipfFund +
+            gst
+          );
+        };
+
+        if (availableAmount && availableAmount > 0) {
+          if (!includeCharges) {
+            newUnits = Math.floor(availableAmount / currentPrice);
+            totalInvestment += newUnits * currentPrice;
+            remainingAmount = availableAmount - newUnits * currentPrice;
+            brokerageTotal = 0;
+          } else {
+            let unitsPossible = Math.floor(availableAmount / currentPrice);
+            for (let n = unitsPossible; n > 0; n--) {
+              let amt = n * currentPrice;
+              let totalCharges = computeCharges(amt);
+              if (amt + totalCharges <= availableAmount) {
+                newUnits = n;
+                brokerageTotal = totalCharges;
+                remainingAmount = availableAmount - (amt + totalCharges);
+                totalInvestment += amt + totalCharges;
+                break;
               }
-              if (newUnits === 0)
-                return showError(
-                  "Available amount too low to buy any units after including brokerage."
-                );
             }
-          } else if (desiredAverage && desiredAverage > 0) {
-            let numerator = desiredAverage * currentUnits - currentInvestment;
-            let denominator = currentPrice - desiredAverage;
-            if (denominator <= 0)
+            if (newUnits === 0)
               return showError(
-                "Desired average must be less than the current price."
+                "Available amount too low to buy any units after including charges."
               );
-            newUnits = Math.ceil(numerator / denominator);
-            if (newUnits < 0)
-              return showError(
-                "Desired average is not achievable with current price!"
-              );
-            let amt = newUnits * currentPrice;
-            brokerageTotal = includeBrokerage ? getBrokerage(amt) : 0;
-            requiredAmount = amt + brokerageTotal;
-            totalInvestment += amt + brokerageTotal;
           }
-          let newAverage = totalInvestment / (currentUnits + newUnits);
-          let totalShares = currentUnits + newUnits;
-          let brokerageLine = includeBrokerage
-            ? `<br>Brokerage for new purchase: <b>₹${brokerageTotal.toFixed(
-                2
-              )}</b> (${broker} - ${category})`
-            : "<br>Brokerage not included (for comparison)";
+        } else if (desiredAverage && desiredAverage > 0) {
+          let numerator = desiredAverage * currentUnits - currentInvestment;
+          let denominator = currentPrice - desiredAverage;
+          if (denominator <= 0)
+            return showError(
+              "Desired average must be less than the current price."
+            );
+          newUnits = Math.ceil(numerator / denominator);
+          if (newUnits < 0)
+            return showError(
+              "Desired average is not achievable with current price!"
+            );
+          let amt = newUnits * currentPrice;
+          brokerageTotal = includeCharges ? computeCharges(amt) : 0;
+          requiredAmount = amt + brokerageTotal;
+          totalInvestment += amt + brokerageTotal;
+        }
 
-          document.getElementById("result").innerHTML = `
-                <div class="alert alert-success">
-                    Additional Units to Buy: <b>${newUnits}</b><br>
-                    New Average Price: <b>${newAverage.toFixed(2)}</b><br>
-                    Total Shares After Purchase: <b>${totalShares}</b><br>
+        let newAverage = totalInvestment / (currentUnits + newUnits),
+          totalShares = currentUnits + newUnits,
+          chargesText = includeCharges
+            ? `<br>Charges Included (incl. brokerage & taxes): <b>${formatToINR(
+                brokerageTotal
+              )}</b> (${broker} - ${category} - ${exchange})`
+            : '<br><small class="text-muted">Charges excluded for comparison</small>';
+
+        document.getElementById("result").innerHTML = `
+                <div class="alert alert-success" role="alert" aria-live="polite" tabindex="0">
+                    Additional Units to Buy: <b>${newUnits}</b><br />
+                    New Average Price: <b>${formatToINR(newAverage)}</b><br />
+                    Total Shares After Purchase: <b>${totalShares}</b><br />
                     ${
                       availableAmount && availableAmount > 0
-                        ? `Remaining Amount: <b>${remainingAmount.toFixed(
-                            2
+                        ? `Remaining Amount: <b>${formatToINR(
+                            remainingAmount
                           )}</b>`
-                        : `Required Amount: <b>${requiredAmount.toFixed(2)}</b>`
+                        : `Required Amount: <b>${formatToINR(
+                            requiredAmount
+                          )}</b>`
                     }
-                    ${brokerageLine}
+                    ${chargesText}
                 </div>
             `;
-        });
+      });
 
-      document.getElementById("clear").addEventListener("click", function () {
+      document.getElementById("clear").addEventListener("click", () => {
         [
           "currentUnits",
           "buyPrice",
@@ -317,6 +1068,45 @@
         document.getElementById("result").innerHTML = "";
         clearError();
       });
+
+      // Dark mode toggle logic
+      const darkToggle = document.getElementById("darkModeToggle");
+      const sliderThumb = darkToggle.nextElementSibling;
+      const container = darkToggle.parentElement;
+      const body = document.body;
+
+      function updateToggleUI() {
+        const checked = darkToggle.checked;
+        sliderThumb.style.left = checked ? "39px" : "3px";
+        sliderThumb.textContent = checked ? "🌙" : "☀️";
+        if (checked) {
+          body.classList.add("dark-mode");
+          localStorage.setItem("darkMode", "enabled");
+        } else {
+          body.classList.remove("dark-mode");
+          localStorage.setItem("darkMode", "disabled");
+        }
+      }
+
+      container.addEventListener("click", () => {
+        darkToggle.checked = !darkToggle.checked;
+        updateToggleUI();
+      });
+
+      container.addEventListener("keydown", (e) => {
+        if (e.key === " " || e.key === "Enter") {
+          e.preventDefault();
+          darkToggle.checked = !darkToggle.checked;
+          updateToggleUI();
+        }
+      });
+
+      darkToggle.addEventListener("change", updateToggleUI);
+
+      if (localStorage.getItem("darkMode") === "enabled") {
+        darkToggle.checked = true;
+      }
+      updateToggleUI();
     </script>
   </body>
 </html>
